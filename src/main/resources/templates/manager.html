@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/index.css}" />
+    <title>Manager</title>
+</head>
+<body>
+<div class="mainContainer">
+    <div class="sideBar">
+        <div class="profileDetails">
+            <div class="profileImage">
+                <img src="profile.png" class="profile" />
+            </div>
+            <p class="empName">Manager AAA</p>
+            <p class="empId managerID">Manager ID</p>
+            <a  class="options">Add Employee</a>
+            <button class="options">Remove Employee</button>
+        </div>
+        <div class="logoutCont">
+            <button class="logoutButton">Logout</button>
+        </div>
+    </div>
+    <div class="contentContainer managerContent">
+        <div class=" firstForm">
+            <p class="currentHeading managerCurrHedaing">Current Leave Form</p>
+            <div class="scrollList newScrollLIst">
+                <!-- Thymeleaf iteration for current leave forms -->
+<!--                <div th:each="form : ${allLeaveModel}" class="oneProposal managerViewOne">-->
+<!--                    <div class="detailsCont">-->
+<!--                        <p class="subTitle">Name : <span class="detail" th:text="${form.name}">Gajendran A</span></p>-->
+<!--                        <p class="subTitle">Reason : <span class="detail" th:text="${form.reason}">Going to native</span></p>-->
+<!--                    </div>-->
+<!--                    <div class="statusContainer">-->
+<!--                        Status :-->
+<!--                        <p class="statusTxt">• <span th:text="${form.statuss}">Waiting</span></p>-->
+<!--                    </div>-->
+<!--                </div>-->
+                <form th:each="form : ${allLeaveModel}" class="oneProposal managerViewOne" th:action="@{/viewform/{id}(id=${form.leave_id})}" method="post">
+                    <!-- Hidden inputs to store form data -->
+                    <input type="hidden" name="name" th:value="${form.name}" />
+                    <input type="hidden" name="reason" th:value="${form.reason}" />
+
+                    <!-- Clickable area -->
+                    <div class="detailsCont" onclick="submitForm(this)">
+                        <p class="subTitle">Name : <span class="detail" th:text="${form.name}">Gajendran A</span></p>
+                        <p class="subTitle">Subject : <span class="detail" th:text="${form.subject}">Going to native</span></p>
+                    </div>
+
+                    <div class="statusContainer">
+                        Status :
+                        <p class="statusTxt">• <span th:text="${form.statuss}">Waiting</span></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="currentFormContainer second">
+            <p class="currentHeading managerCurrHedaing">Past Leave Forms</p>
+            <div class="scrollList">
+                <!-- Thymeleaf iteration for past leave forms -->
+                <div th:each="form : ${allPastForManager}" class="oneProposal managerViewOne">
+                    <div class="detailsCont">
+                        <p class="subTitle">Name : <span class="detail" th:text="${form.name}">Gajendran A</span></p>
+                        <p class="subTitle">Subject : <span class="detail" th:text="${form.subject}">Going to native</span></p>
+                    </div>
+                    <div class="statusContainer">
+                        Status :
+                        <p class="statusTxt" th:id="'status' + ${form.id}" th:text="${form.statuss}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sideBar rightSideBar">
+        <p class="empHeading">All Employees</p>
+        <div class="searchCont">
+            <input type="text" class="searchBar" placeholder="Search Employee" />
+        </div>
+        <ul class="employeesList">
+            <!-- Thymeleaf iteration for employee list -->
+            <li th:each="employee : ${allEmpNames}" th:text="${employee.name}">Gajendran</li>
+        </ul>
+    </div>
+</div>
+<script>
+    // Function to submit the form upon click
+    function submitForm(element) {
+        element.closest('form').submit(); // Submit the closest form
+    }
+</script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let proposals = /*[[${allPastForManager}]]*/ [];
+    proposals.forEach(function(form) {
+        let statusElement = document.getElementById('status' + form.id);
+
+        let status = statusElement.innerText; // Assuming 'statuss' is the property containing status information
+        console.log(status);
+
+        if (status === '0') {
+            statusElement.innerText = "• Waiting";
+            statusElement.style.backgroundColor = "#FEF3C7";
+            statusElement.style.color = "#B45309";
+        } else if (status === '1') {
+            statusElement.innerText = "• Approved";
+            statusElement.style.backgroundColor = "#CCFBF1";
+            statusElement.style.color = "#0F766E";
+        } else if (status === 'Denied') {
+            statusElement.innerText = "• Denied";
+            statusElement.style.backgroundColor = "#FFD9D9";
+            statusElement.style.color = "#E41300";
+        }
+    });
+    /*]]>*/
+</script>
+
+</body>
+</html>

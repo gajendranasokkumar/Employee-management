@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/index.css}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Past Forms</title>
+    <style>
+        .mainBox{
+            padding: 35px;
+        }
+        .statusTxt{
+            font-size: 20px;
+            padding: 5px 15px 5px 15px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="mainBox">
+    <div class="oneProposal managerViewOne" th:each="one : ${pastModel}">
+        <div class="detailsCont">
+            <p class="subTitle">Name : <span class="detail" th:text="${one.name}">Gajendran A</span></p>
+            <p class="subTitle">Subject : <span class="detail" th:text="${one.subject}">Going to native</span></p>
+        </div>
+        <div class="statusContainer">
+            Status :
+            <p class="statusTxt" th:id="'status' + ${one.leave_id}" th:text="${one.statuss}"></p>
+        </div>
+        <script th:inline="javascript">
+
+            /*<![CDATA[*/
+            let proposals = /*[[${pastModel}]]*/ [];
+            proposals.forEach(function(form) {
+                console.log(form['leave_id'])
+                let statusElement = document.getElementById('status' + form['leave_id']);
+    console.log(statusElement);
+                let status = statusElement.innerText; // Assuming 'statuss' is the property containing status information
+                console.log(status);
+
+                if (status === '0') {
+                    statusElement.innerText = "• Waiting";
+                    statusElement.style.backgroundColor = "#FEF3C7";
+                    statusElement.style.color = "#B45309";
+                } else if (status === '1') {
+                    statusElement.innerText = "• Approved";
+                    statusElement.style.backgroundColor = "#CCFBF1";
+                    statusElement.style.color = "#0F766E";
+                } else if (status === 'Denied') {
+                    statusElement.innerText = "• Denied";
+                    statusElement.style.backgroundColor = "#FFD9D9";
+                    statusElement.style.color = "#E41300";
+                }
+            });
+            /*]]>*/
+        </script>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/index.css}" />
+    <script src="https://kit.fontawesome.com/2c47716a54.js" crossorigin="anonymous"></script>
+    <title>View Form</title>
+</head>
+<body>
+<div class="mainContainer formParent">
+    <div class="mainForm viewLeaveForm">
+        <div class="backButtonCont">
+            <i class="fa-solid fa-left-long"></i>
+        </div>
+        <div class="form ">
+            <h1 class="loginHeading">Leave Form</h1>
+            <table>
+                <tr>
+                    <td class="firstBar"><p class="title">Name: </p></td>
+                    <td><div th:text="${oneForm.name}" class="inputBox"></div></td>
+                </tr>
+                <tr>
+                    <td class="firstBar"><p class="title">Emp Id: </p></td>
+                    <td><div th:text="${oneForm.id}" class="inputBox"></div></td>
+                </tr>
+                <tr>
+                    <td class="firstBar"><p class="title">From Date: </p></td>
+                    <td><div th:text="${oneForm.from_date}" class="inputBox"></div></td>
+                </tr>
+                <tr>
+                    <td class="firstBar"><p class="title">To Date: </p></td>
+                    <td><div th:text="${oneForm.to_date}" class="inputBox"></div></td>
+                </tr>
+                <tr>
+                    <td class="firstBar"><p class="title">Subject: </p></td>
+                    <td><div th:text="${oneForm.subject}" class="inputBox textArea"></div></td>
+                </tr>
+                <tr>
+                    <td class="firstBar"><p class="title">Reason: </p></td>
+                    <td><div th:text="${oneForm.reason}" class="inputBox textArea"></div></td>
+                </tr>
+            </table>
+            <div class="buttonContainer">
+                <form th:action="@{/denyForm/{id}(id=${oneForm.leave_id})}" method="post">
+                    <button type="submit" class="clearButton" id="clearButton">Deny</button>
+                </form>
+                <form th:action="@{/approveForm/{id}(id=${oneForm.leave_id})}" method="post">
+                    <button type="submit" class="loginButton" id="loginButton">Approve</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

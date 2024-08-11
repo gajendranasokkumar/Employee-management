@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/2c47716a54.js" crossorigin="anonymous"></script>
+    <title>Remove Employee</title>
+    <style>
+        :root{
+            --darkGreen: #12372A;
+            --freshGreen: #436850;
+            --secGreen: #436850;
+            --lightGreen: #ADBC9F;
+            --pale: #FBFADA;
+        }
+
+
+        body{
+            margin: 0;
+            font-family: "Roboto";
+            background-color: #9fbca389;
+            /* background-image: url('https://cdn3.vectorstock.com/i/1000x1000/71/97/creative-icons-pattern-seamless-white-background-vector-36977197.jpg'); */
+            background-size: 800px;
+        }
+
+        .mainContainer{
+            height: 100vh;
+            display: flex;
+        }
+        .sideBar{
+            height: 100%;
+            width: 20%;
+            background-color: var(--darkGreen);
+            border-top-right-radius: 35px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .profileDetails{
+            margin-top: 35px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+        }
+        .profileImage{
+            height: 150px;
+            width: 150px;
+            background-color: white;
+            border-radius: 100%;
+            border: 5px solid var(--freshGreen);
+        }
+        .profile{
+            width: 100%;
+            height: 100%;border-radius: 100%;
+        }
+        .empName{
+            color: white;
+            font-size: 30px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .empId{
+            margin: 0px;
+            font-size: 20px;
+            color: white;
+        }
+        .logoutCont{
+            margin-bottom: 25px;
+        }
+        .logoutButton{
+            font-size: 22px;
+            padding: 8px;
+            border: none;
+            width: 160px;
+            border-radius: 11px;
+            background-color: var(--secGreen);
+            color: white;
+        }
+        .contentContainer{
+            width: 80%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            backdrop-filter: blur(3px) saturate(100%);
+            -webkit-backdrop-filter: blur(2px) saturate(100%);
+        }
+        .topDetailsCont{
+            height: 80px;
+            width: 80%;
+            margin-top: 25px;
+            border-radius: 10px;
+            background-color: var(--freshGreen);
+            display: flex;
+        }
+        .leaveDetailsCont{
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 25px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        .daysNumber{
+            padding: 5px;
+            background-color: white;
+            padding-left: 15px;
+            padding-right: 15px;
+            color: black;
+            margin: 0px 15px 0px 15px;
+            border-radius: 8px;
+        }
+        .firstdet{
+            border-right: 8px solid white;
+        }
+        .optionsContainer{
+            height: 250px;
+            width: 80%;
+            /* background-color: white; */
+            margin-top: 25px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-evenly;
+        }
+        .option{
+            height: 220px;
+            width: 280px;
+            background-color: var(--freshGreen);
+            display: flex;
+            align-items: end;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 3px solid var(--freshGreen);
+        }
+        .innerOption{
+            height: 80%;
+            width: 100%;
+            border-radius: 12px;
+            background-color: whitesmoke;
+            transition: all 300ms;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            text-align: center;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+        .option:hover{
+            .innerOption{
+                height: 75%;
+            }
+        }
+        .currentFormContainer{
+            height: 40%;
+            width: 80%;
+        }
+        .currentHeading{
+            font-size: 25px;
+            padding: 8px;
+            border: none;
+            width: 210px;
+            border-radius: 11px;
+            background-color: var(--secGreen);
+            color: white;
+        }
+        .oneProposal{
+            height: 150px;
+            width: 100%;
+            background-color: whitesmoke;
+            border-radius: 40px;
+            border-bottom-left-radius: 5px;
+            border: 2px solid var(--freshGreen);
+            padding: 25px;
+            display: flex;
+            align-items: center;
+        }
+        .subTitle{
+            font-size: 25px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: var(--darkGreen);
+        }
+        .detailsCont{
+            width: 70%;
+        }
+        .detail{
+            color: black;
+        }
+        .statusContainer{
+            font-size: 25px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: var(--darkGreen);
+        }
+
+
+        .statusTxt{
+            background-color: #FEF3C7;
+            color: #B45309;
+            font-size: 20px;
+            padding: 5px 15px 5px 15px;
+            border-radius: 10px;
+            /* background-color: #CCFBF1;
+            color: #0F766E;
+            background-color: #FFD9D9;
+            color: #E41300; */
+        }
+        .formParent{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mainForm{
+            width: 50vw;
+            height: 95%;
+            background-color: whitesmoke;
+            outline: 2px solid var(--darkGreen);
+            border-radius: 25px;
+        }
+        .backButtonCont{
+            height: 100px;
+            width: 100px;
+            background-color: #12372A;
+            border-radius: 100%;
+            position: absolute;
+            left: 250px;
+            border: 5px solid white ;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 35px;
+        }
+
+        .inputBox {
+            padding: 3px;
+            width: 250px;
+            height: 25px;
+            margin-left: 20px;
+            font-size: 15px;
+            border-width: 2px;
+            border-color: #cccccc;
+            background-color: #ffffff;
+            color: rgb(32, 30, 30);
+            font-weight: 600;
+            border-style: solid;
+            border-radius: 3px;
+            letter-spacing: 2px;
+            /* box-shadow: 0px 0px 5px rgba(79, 79, 79, 0.75); */
+            /* text-shadow: 0px 0px 5px rgba(66,66,66,.75); */
+            margin-bottom: 15px;
+            text-align: center;
+            font-family: "Finger Paint", cursive;
+            font-family: "Roboto Slab", serif;
+        }
+
+        ::placeholder {
+            color: rgba(54, 49, 49, 0.593);
+            font-weight: 600;
+        }
+
+        .buttonContainer {
+            text-align: right;
+            width: 250px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+        }
+
+        .clearButton {
+            height: 35px;
+            width: 80px;
+            border-radius: 18px;
+            background-color: white;
+            border: 2px solid rgba(162, 158, 154, 0.527);
+        }
+
+        .loginButton {
+            height: 35px;
+            width: 80px;
+            border-radius: 18px;
+            border: 0;
+            background-color: #1a73e8;
+            color: white;
+        }
+
+        .clearButton:focus , .loginButton:focus{
+            outline: none;
+        }
+        .form{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .oneNameCont{
+            display: flex;
+            align-items: center;
+        }
+
+        .title{
+            font-size: 20px;
+        }
+        .textArea{
+            height: 100px;
+        }
+        .options{
+            font-size: 22px;
+            padding: 8px;
+            border: none;
+            width: 250px;
+            border-radius: 11px;
+            background-color: transparent;
+            color: white;
+            margin-bottom: 10px;
+        }
+        .options:focus , .options:hover{
+            background-color: var(--freshGreen);
+            color: var(--pale);
+        }
+
+        .managerID{
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--freshGreen);
+        }
+        .rightSideBar{
+            border-top-right-radius: 0px;
+            border-bottom-left-radius: 35px;
+            padding-top: 35px;
+            height:auto;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+        .employeesList{
+            margin-top: 0px;
+        }
+        .empHeading{
+            font-size: 23px;
+            color: white;
+            text-align: center;
+            width: 100%;
+        }
+        .searchBar{
+            padding: 5px;
+            font-size: 22px;
+            border-width: 1px;
+            border-color: #CCCCCC;
+            background-color: #FFFFFF;
+            color: #000000;
+            border-style: solid;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(66,66,66,.75);
+            margin-bottom: 15px;
+        }
+        .searchCont{
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        .searchBar:focus{
+            outline: none;
+        }
+        .employeesList{
+            list-style-type: none;
+            width: 80%;
+        }
+        li{
+            text-align: left;
+            margin-top: 10px;
+            font-size: 23px;
+            color: white;
+            width: 100%;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        li:hover{
+            background-color: var(--freshGreen);
+        }
+        .managerViewOne{
+            height: 100px;
+            width: auto;
+            margin-bottom: 5px;
+        }
+        .second{
+            margin-top: -50px;
+        }
+        .scrollList{
+            overflow-y: auto;
+            height: 95%;
+        }
+        .managerContent{
+            width: 60%;
+        }
+        .viewLeaveForm{
+            overflow: auto;
+            padding-bottom: 15px;
+        }
+        .firstForm{
+            width: 80%;
+            height: 50%;
+            margin-bottom: 65px;
+        }
+        .managerCurrHedaing{
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        .newScrollLIst{
+            height: 86%;
+        }
+        .removeHeading{
+            text-align: center;
+        }
+        .head{
+            width: 100%;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            color: white;
+            font-size: 20px;
+            background-color: var(--darkGreen);
+
+        }
+
+        .oneEmployeeDelete{
+            width: 100%;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            color: black;
+            font-size: 20px;
+            border-bottom: 2px solid gray;
+        }
+
+        .oneEmployeeDelete:hover{
+            background-color: var(--freshGreen);
+            color: white;
+        }
+
+        .nameHEad{
+            width: 40%;
+        }
+        .EmpIdHEad{
+            width: 40%;
+        }
+        .head{
+            margin-bottom: 15px;
+        }
+        .DeleteIconHeadButton{
+            background-color: #FFD9D9;
+            border: none;
+            color: red;
+            font-size: 20px;
+            padding: 5px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+        table, tr{
+            width: 100%;
+        }
+        td{
+            text-align: left;
+        }
+        .inputBox{
+            width: 90%;
+        }
+        .firstBar{
+            width: 30%;
+            padding-left: 55px;
+            font-weight: 600;
+            color: var(--darkGreen);
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+    </style>
+</head>
+<body>
+<div class="mainContainer formParent">
+    <div class="mainForm viewLeaveForm">
+        <div class="backButtonCont">
+            <i class="fa-solid fa-left-long"></i>
+        </div>
+        <h1 class="loginHeading removeHeading">Remove Employee</h1>
+        <div class="form">
+            <div class="head">
+                <p class="nameHEad">Name</p>
+                <p class="EmpIdHEad">Employee ID</p>
+                <p class="DeleteIconHead">Delete</p>
+            </div>
+            <!-- Assuming you have a list of employees to display -->
+            <div th:each="employee : ${employees}" class="oneEmployeeDelete">
+                <p class="nameHEad" th:text="${employee.name}"></p>
+                <p class="EmpIdHEad" th:text="${employee.id}"></p>
+                <form th:action="@{/manager/removeemployee/{id}(id=${employee.id})}"  method="post">
+                    <input type="hidden" value="delete" name="_method" />
+                    <button type="submit" class="DeleteIconHeadButton">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
